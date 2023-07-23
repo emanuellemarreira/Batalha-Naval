@@ -81,7 +81,7 @@ public class TelaJogo extends JFrame implements ActionListener {
         JButton botaoClicado = (JButton) e.getSource();
         for (int i = 0 ; i <= 1; i++) {
         	for(int j = 0; j<=1; j++) {
-        		if((int)botaoClicado.getClientProperty("temNavio") == 0) {
+        		if((int)botaoClicado.getClientProperty("temNavio") == 1) {
         			botaoClicado.setText("*");
         		}else {
         			botaoClicado.setText("X");
