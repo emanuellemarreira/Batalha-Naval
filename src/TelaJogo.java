@@ -1,4 +1,5 @@
 import java.awt.Container;
+import java.util.Random;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,41 +17,45 @@ public class TelaJogo extends JFrame implements ActionListener {
     JPanel tabuleiro, info;
     JButton um, dois, tres, quatro;
     JLabel teste;
+    Random gerador;
 
     TelaJogo() {
     	//Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
         
-        
+        //Criando container (onde vão ficar butões, rotulos, paineis, etc)
         Container caixa = janela.getContentPane();
 
-
+        //Criando tabuleiro
         JPanel tabuleiro = new JPanel();
         tabuleiro.setLayout(new GridBagLayout());
 
+        //Criando gerador de numero aleatorio
+        Random gerador = new Random();
+        
         // GridBagConstraints fornece as coodenadas de cada botão
         GridBagConstraints gbc = new GridBagConstraints();
         // Adding the buttons to the grid with appropriate constraints
         JButton um = new JButton("~");
-        um.putClientProperty("temNavio", 0);
+        um.putClientProperty("temNavio", gerador.nextInt(2));
         gbc.gridx = 0;
         gbc.gridy = 0;
         tabuleiro.add(um, gbc);
 
         JButton dois = new JButton("~");
-        dois.putClientProperty("temNavio", 0);
+        dois.putClientProperty("temNavio", gerador.nextInt(2));
         gbc.gridx = 1;
         gbc.gridy = 0;
         tabuleiro.add(dois, gbc);
 
         JButton tres = new JButton("~");
-        tres.putClientProperty("temNavio", 1);
+        tres.putClientProperty("temNavio", gerador.nextInt(2));
         gbc.gridx = 0;
         gbc.gridy = 1;
         tabuleiro.add(tres, gbc);
 
         JButton quatro = new JButton("~");
-        quatro.putClientProperty("temNavio", 0);
+        quatro.putClientProperty("temNavio", gerador.nextInt(2));
         gbc.gridx = 1;
         gbc.gridy = 1;
         tabuleiro.add(quatro, gbc);
