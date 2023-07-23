@@ -8,7 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
-
+// A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
+// A classe Tela jogo implementa ActionListener para ser capaz de responder à ações como clicar
 public class TelaJogo extends JFrame implements ActionListener {
     JFrame janela;
     Container caixa;
@@ -17,15 +18,17 @@ public class TelaJogo extends JFrame implements ActionListener {
     JLabel teste;
 
     TelaJogo() {
+    	//Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
-
+        
+        
         Container caixa = janela.getContentPane();
 
 
         JPanel tabuleiro = new JPanel();
         tabuleiro.setLayout(new GridBagLayout());
 
-        // Create GridBagConstraints to control the positioning of components in the grid
+        // GridBagConstraints fornece as coodenadas de cada botão
         GridBagConstraints gbc = new GridBagConstraints();
         // Adding the buttons to the grid with appropriate constraints
         JButton um = new JButton("~");
