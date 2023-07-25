@@ -23,7 +23,7 @@ public class TelaJogo extends JFrame implements ActionListener {
     	//Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
         
-        //Criando container (onde vão ficar butões, rotulos, paineis, etc)
+        //Criando container (onde vão ficar botões, rotulos, paineis, etc)
         Container caixa = janela.getContentPane();
 
         //Criando tabuleiro
@@ -32,34 +32,37 @@ public class TelaJogo extends JFrame implements ActionListener {
 
         //Criando gerador de numero aleatorio
         Random gerador = new Random();
-        
+        int[][] mapanavios = new int[5][5];
+        int contanavios = 0;
+        for (int i = 0; i<5; i++) {
+        	for (int j = 0; j<5; j++) {
+        		if(contanavios == 3) {
+        			break;
+        		}
+        		mapanavios[i][j] = gerador.nextInt(2);//gerar numeros entre 0 e 24
+        		if (mapanavios[i][j] == 1) {
+        			contanavios++;
+        		}
+        	}
+        }
         // GridBagConstraints fornece as coodenadas de cada botão
         GridBagConstraints gbc = new GridBagConstraints();
-        // Adding the buttons to the grid with appropriate constraints
-        JButton um = new JButton("~");
-        um.putClientProperty("temNavio", gerador.nextInt(2));
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        tabuleiro.add(um, gbc);
-
-        JButton dois = new JButton("~");
-        dois.putClientProperty("temNavio", gerador.nextInt(2));
-        gbc.gridx = 1;
-        gbc.gridy = 0;
-        tabuleiro.add(dois, gbc);
-
-        JButton tres = new JButton("~");
-        tres.putClientProperty("temNavio", gerador.nextInt(2));
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        tabuleiro.add(tres, gbc);
-
-        JButton quatro = new JButton("~");
-        quatro.putClientProperty("temNavio", gerador.nextInt(2));
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        tabuleiro.add(quatro, gbc);
-
+        
+        //matriz de botoes
+        JButton[][] botoes = new JButton[5][5];
+        //configurandos os botoes
+        for (int i = 0; i<5; i++) {
+        	for (int j = 0; j<5; j++) {
+        		JButton b = new JButton("~");
+        		botoes[i][j] = b;
+        		gbc.gridx = i;
+        		gbc.gridy = j;        	
+        		botoes[i][j].putClientProperty("temNavio", mapanavios[i][j]);
+        		tabuleiro.add(botoes[i][j], gbc);
+        		botoes[i][j].addActionListener(this);
+        	}
+        }
+        
         JPanel info = new JPanel();
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
         JLabel teste = new JLabel("teste");
@@ -69,12 +72,6 @@ public class TelaJogo extends JFrame implements ActionListener {
         caixa.add(tabuleiro);
         caixa.add(info);
         
-        // Using layout compostos
-        um.addActionListener(this);
-        dois.addActionListener(this);
-        tres.addActionListener(this);
-        quatro.addActionListener(this);
-
         janela.setBounds(300, 300, 300, 300);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setVisible(true);
