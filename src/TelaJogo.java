@@ -32,19 +32,53 @@ public class TelaJogo extends JFrame implements ActionListener {
 
         //Criando gerador de numero aleatorio
         Random gerador = new Random();
+        
+        //Criando mapa (0 e 1) onde os navios estarão
         int[][] mapanavios = new int[5][5];
         int contanavios = 0;
-        for (int i = 0; i<5; i++) {
-        	for (int j = 0; j<5; j++) {
-        		if(contanavios == 3) {
-        			break;
-        		}
-        		mapanavios[i][j] = gerador.nextInt(2);//gerar numeros entre 0 e 24
-        		if (mapanavios[i][j] == 1) {
-        			contanavios++;
-        		}
+        
+        //Garantir que nunca vão ser gerados endereços iguais para dois navios
+        //Pode ser otimizado futuramente
+        int coluna1=-1;
+        int coluna2=-1;
+        int linha1=-1;
+        int linha2=-1;
+        for (int l =0; l <3; l++) {
+        	int chave1 = gerador.nextInt(4) % 5;
+        	int chave2 = gerador.nextInt(4) % 5;
+        	
+        	 if (l == 0) {
+        		coluna1 = chave1;
+        		linha1 = chave2;
         	}
-        }
+        	
+        	else if (l == 1) {
+        		while (chave1 == coluna1 && chave2 == linha1) {
+            		chave1 = gerador.nextInt(4) % 5;
+            		chave2 = gerador.nextInt(4) % 5;}
+        		coluna2 = chave1;
+        		linha2 = chave2;
+        	}
+        	
+        	else if(l == 2) {
+        		while ((chave1 == coluna1 && chave2 == linha1) || (chave1 == coluna2 && chave2 == linha2)) {
+            		chave1 = gerador.nextInt(4) % 5;
+            		chave2 = gerador.nextInt(4) % 5;}
+        	}
+        	
+		    for (int i = 0; i<5; i++) {
+		    	for (int j = 0; j<5; j++) {
+		    		if(contanavios == 3) {
+		    			break;
+		    		}
+		    		
+		    		if (i == chave1 && j == chave2) {
+		    			mapanavios[i][j] = 1;
+		    			contanavios++;
+		    		}
+		    	}
+		    }
+		}
         // GridBagConstraints fornece as coodenadas de cada botão
         GridBagConstraints gbc = new GridBagConstraints();
         
