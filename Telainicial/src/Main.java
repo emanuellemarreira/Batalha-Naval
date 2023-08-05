@@ -12,6 +12,8 @@ public class Main extends JFrame implements ActionListener {
         setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setExtendedState(JFrame.NORMAL);
 
         // Crie um JTabbedPane
         JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -19,7 +21,6 @@ public class Main extends JFrame implements ActionListener {
 
         // Crie os painéis para as abas do JTabbedPane
         JPanel telaInicialPanel = criarTelaInicialPanel();
-        JPanel creditosPanel = criarCreditosPanel();
 
         // Adicione os painéis como abas do JTabbedPane
         tabbedPane.addTab(null, telaInicialPanel);
@@ -43,13 +44,13 @@ public class Main extends JFrame implements ActionListener {
                 g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
             }
         };
-        Telamenuinicial.setLayout(null); // Aumente para 5 para adicionar espaço extra
+        Telamenuinicial.setLayout(null); //para editar a localização dos botões livremente
 
 
         // Criando os botões do menu inicial:
         String caminhonj = "C:\\Users\\Elizabeth\\Documents\\GIT\\ProjetoPP\\Fotos\\pngwing.com.png";
         ImageIcon fotonj = new ImageIcon(caminhonj);
-        JButton novoJogoButton = new JButton("Iniciar", fotonj);
+        JButton novoJogoButton = new JButton(fotonj);
         novoJogoButton.setLocation(250, 250);
         novoJogoButton.setSize(110,50);
         novoJogoButton.setContentAreaFilled(false);
@@ -68,11 +69,10 @@ public class Main extends JFrame implements ActionListener {
         sairButton.setBorderPainted(false);
 
         // Criando um novo painel para o título e centralizando:
-        JPanel tituloPanel = new JPanel();
         String caminhoDaImagem = "C:\\Users\\Elizabeth\\Documents\\GIT\\ProjetoPP\\Fotos\\dc3d2c5cc28562c174703cded1ed335e.png";
         ImageIcon imagemIcone = new ImageIcon(caminhoDaImagem);
         JLabel labelTitulo = new JLabel(imagemIcone);
-        labelTitulo.setBounds(35, 50, 500, 99);
+        labelTitulo.setBounds(40, 50, 500, 99);
         Telamenuinicial.add(labelTitulo);
 
         // ActionListener do botão iniciar:
@@ -107,30 +107,39 @@ public class Main extends JFrame implements ActionListener {
         return Telamenuinicial;
     }
 
-    private JPanel criarCreditosPanel() {
-        JPanel creditosPanel = new JPanel();
-        creditosPanel.setLayout(new BorderLayout());
-
-        JTextArea oi = new JTextArea("Alunos: \nJonatan\nJoão\nManu\nMoi\nBia\nItalo 1\nItalo 2\nDanilo");
-        creditosPanel.add(oi, BorderLayout.CENTER);
-
-        return creditosPanel;
-    }
 
     private void iniciarJogo() {
         // Coloque o código para iniciar o jogo aqui
     }
 
-    public void exibirCreditos() {
-        JFrame janelacreditos = new JFrame("Créditos");
-        janelacreditos.setBounds(300, 300, 300, 300);
-        janelacreditos.setLayout(new BorderLayout());
+        public static void exibirCreditos() {
+            JFrame janelacreditos = new JFrame("Créditos");
+            janelacreditos.setSize(300, 300);
+            janelacreditos.setUndecorated(true);
+            janelacreditos.setResizable(false);
+            janelacreditos.setExtendedState(JFrame.NORMAL);
+            janelacreditos.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            janelacreditos.setLayout(null);
 
-        JTextArea oi = new JTextArea("Alunos: \nJonatan\nJoão\nManu\nMoi\nBia\nItalo 1\nItalo 2\nDanilo");
-        janelacreditos.add(oi, BorderLayout.CENTER);
+            String texto = "<html><div style='text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center;'>Jogo feito por:<br>Beatriz Guedes da Silva<br>Camila Vasconcelos Moi<br>Danilo Silva<br>Emanuelle Rocha Marreira<br>Gabriel Cortez de São Paulo Rozeno<br>Italo Ferreira Fonseca<br>Italo Guilherme Monte<br>João Vitor Silva de Carvalho<br>Jonatan da Silva Frota<br>Alunos de Engenharia de Computação pela UEA -<br>Universidade Estadual do Amazonas</div></html>";
 
-        janelacreditos.setVisible(true);
-    }
+            JLabel label = new JLabel(texto);
+            label.setBounds(55, 20, 200, 200);
+
+            JButton voltarButton = new JButton("Voltar");
+            voltarButton.setBounds(120, 250, 70,20);
+            voltarButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent event) { janelacreditos.dispose(); }
+            });
+            janelacreditos.add(voltarButton);
+
+            janelacreditos.add(label);
+
+            janelacreditos.setLocationRelativeTo(null); // Centralizar a janela
+            janelacreditos.setVisible(true);
+        }
+
 
     public static void main(String[] args) {
         try {
