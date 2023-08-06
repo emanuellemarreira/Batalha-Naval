@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 public class TelaInicial extends JFrame implements ActionListener {
 
+    private boolean isPlaying = true;
+    private SourceDataLine line;
+
     public TelaInicial() {
         // Criando a janela do menu inicial:
         setTitle("BATALHA NAVAL");
@@ -27,6 +30,9 @@ public class TelaInicial extends JFrame implements ActionListener {
 
         // Adicione o JTabbedPane à janela
         add(tabbedPane);
+
+        new Thread(() -> reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav")).start();
+
 
         setVisible(true);
     }
@@ -67,6 +73,8 @@ private JPanel criarTelaInicialPanel() {
         sairButton.setBounds(270, 370, 50, 50);
         sairButton.setContentAreaFilled(false);
         sairButton.setBorderPainted(false);
+        JButton musicButton = new JButton("Musga");
+        musicButton.setBounds(10, 5, 50, 50);
 
         // Criando um novo painel para o título e centralizando:
         String caminhoDaImagem = "imagens/dc3d2c5cc28562c174703cded1ed335e.png";
@@ -105,6 +113,47 @@ private JPanel criarTelaInicialPanel() {
 
 
         return Telamenuinicial;
+    }
+
+    private void reproduzirMusica(String filePath) {
+        try {
+            File audioFile = new File(filePath);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            AudioFormat format = audioStream.getFormat();
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+
+            if (!AudioSystem.isLineSupported(info)) {
+                System.err.println("Line not supported");
+                return;
+            }
+
+            line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+
+            int bufferSize = 4096;
+            byte[] buffer = new byte[bufferSize];
+            int bytesRead = 0;
+
+            while (isPlaying && bytesRead != -1) {
+                bytesRead = audioStream.read(buffer, 0, buffer.length);
+                if (bytesRead >= 0) {
+                    line.write(buffer, 0, bytesRead);
+                }
+            }
+
+            line.drain();
+            line.close();
+            audioStream.close();
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void pararmusica() {
+        isPlaying = false;
+        line.stop();
+        line.close();
     }
 
     public static void main(String[] args) {
