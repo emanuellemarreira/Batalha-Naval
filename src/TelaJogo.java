@@ -4,7 +4,6 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,14 +11,9 @@ import javax.swing.*;
 // A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
 // A classe Tela jogo implementa ActionListener para ser capaz de responder à ações como clicar
 public class TelaJogo extends JFrame implements ActionListener {
-    JFrame janela;
-    Container caixa;
-    JPanel tabuleiro, info;
-    JButton um, dois, tres, quatro;
-    JLabel teste;
-    Random gerador;
+    JLabel informacoes;
 
-    TelaJogo() {
+    public TelaJogo() {
     	//Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
         
@@ -81,9 +75,10 @@ public class TelaJogo extends JFrame implements ActionListener {
 		}
         // GridBagConstraints fornece as coodenadas de cada botão
         GridBagConstraints gbc = new GridBagConstraints();
-        
+
         //matriz de botoes
         JButton[][] botoes = new JButton[5][5];
+        informacoes = new JLabel("teste");
         //configurandos os botoes
         for (int i = 0; i<5; i++) {
         	for (int j = 0; j<5; j++) {
@@ -93,14 +88,47 @@ public class TelaJogo extends JFrame implements ActionListener {
         		gbc.gridy = j;        	
         		botoes[i][j].putClientProperty("temNavio", mapanavios[i][j]);
         		tabuleiro.add(botoes[i][j], gbc);
-        		botoes[i][j].addActionListener(this);
-        	}
+        		botoes[i][j].addActionListener(new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JButton botaoClicado = (JButton) e.getSource();
+                    int coluna = -1;
+                    int linha = -1;
+                    for (int i = 0; i < 5; i++) {
+                        for (int j = 0; j < 5; j++) {
+                            if (botoes[i][j] == botaoClicado) {
+                                coluna = i;
+                                linha = j;
+                                break;
+                            }
+                        }
+                    }
+                    int naviosNaLinha = 0;
+                    int naviosNaColuna = 0;
+                    for (int i = 0; i < 5; i++) {
+                        if (mapanavios[coluna][i] == 1) {
+                            naviosNaLinha++;
+                        }
+                        if (mapanavios[i][linha] == 1) {
+                            naviosNaColuna++;
+                        }
+                    }
+                    if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
+                        botaoClicado.setText("*");
+                    } else {
+                        botaoClicado.setText("X");
+                    }
+                    informacoes.setText("Há "+ naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha+ " navio(s) nessa linha");
+                }
+                    
+                });
+  	}
         }
         
         JPanel info = new JPanel();
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
-        JLabel teste = new JLabel("teste");
-        info.add(teste);
+        info.add(informacoes);
 
         caixa.setLayout(new GridLayout(2,1));
         caixa.add(tabuleiro);
@@ -117,15 +145,7 @@ public class TelaJogo extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JButton botaoClicado = (JButton) e.getSource();
-        for (int i = 0 ; i <= 1; i++) {
-        	for(int j = 0; j<=1; j++) {
-        		if((int)botaoClicado.getClientProperty("temNavio") == 1) {
-        			botaoClicado.setText("*");
-        		}else {
-        			botaoClicado.setText("X");
-        		}
-        	}
-        }
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }
