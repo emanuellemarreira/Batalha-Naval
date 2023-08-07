@@ -90,40 +90,53 @@ public class TelaJogo extends JFrame implements ActionListener {
         		tabuleiro.add(botoes[i][j], gbc);
         		botoes[i][j].addActionListener(new ActionListener() {
 
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JButton botaoClicado = (JButton) e.getSource();
-                    int coluna = -1;
-                    int linha = -1;
-                    for (int i = 0; i < 5; i++) {
-                        for (int j = 0; j < 5; j++) {
-                            if (botoes[i][j] == botaoClicado) {
-                                coluna = i;
-                                linha = j;
-                                break;
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JButton botaoClicado = (JButton) e.getSource();
+                        int coluna = -1;
+                        int linha = -1;
+
+                        // Encontra a posição do botão clicado na matriz de botões
+                        for (int i = 0; i < 5; i++) {
+                            for (int j = 0; j < 5; j++) {
+                                if (botoes[i][j] == botaoClicado) {
+                                    coluna = j;
+                                    linha = i;
+                                    break;
+                                }
                             }
                         }
-                    }
-                    int naviosNaLinha = 0;
-                    int naviosNaColuna = 0;
-                    for (int i = 0; i < 5; i++) {
-                        if (mapanavios[coluna][i] == 1) {
-                            naviosNaLinha++;
+
+                        int naviosNaLinha = 0;
+                        int naviosNaColuna = 0;
+
+                        // Conta a quantidade de navios nas linhas e colunas
+                        for (int i = 0; i < 5; i++) {
+                            if (mapanavios[linha][i] == 1) { // Aqui a variável 'linha' foi invertida
+                                naviosNaColuna++;
+                            }
                         }
-                        if (mapanavios[i][linha] == 1) {
-                            naviosNaColuna++;
+
+                        for (int i = 0; i < 5; i++) {
+                            if (mapanavios[i][coluna] == 1) { // Aqui a variável 'coluna' foi invertida
+                                naviosNaLinha++;
+                            }
+                        }
+
+                        // Atualiza informações com a quantidade de navios encontrados
+                        informacoes.setText("Há " + naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha + " navio(s) nessa linha");
+
+                        //texto do botão clicado
+                        if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
+                            botaoClicado.setText("*");
+                        } else {
+                            botaoClicado.setText("X");
                         }
                     }
-                    if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
-                        botaoClicado.setText("*");
-                    } else {
-                        botaoClicado.setText("X");
-                    }
-                    informacoes.setText("Há "+ naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha+ " navio(s) nessa linha");
-                }
-                    
+
+
                 });
-  	}
+            }
         }
         
         JPanel info = new JPanel();
