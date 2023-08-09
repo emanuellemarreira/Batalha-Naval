@@ -11,7 +11,10 @@ import javax.swing.*;
 // A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
 // A classe Tela jogo implementa ActionListener para ser capaz de responder à ações como clicar
 public class TelaJogo extends JFrame implements ActionListener {
-    JLabel informacoes;
+    
+	JLabel informacoes;
+	int QuantidadeDeJogadas = 5; //quantidade máxima de jogadas
+	int VezesJogadas = 0; // contador de jogadas feitas
 
     public TelaJogo() {
     	//Criação da Tela
@@ -30,6 +33,7 @@ public class TelaJogo extends JFrame implements ActionListener {
         //Criando mapa (0 e 1) onde os navios estarão
         int[][] mapanavios = new int[5][5];
         int contanavios = 0;
+       
         
         //Garantir que nunca vão ser gerados endereços iguais para dois navios
         //Pode ser otimizado futuramente
@@ -93,9 +97,14 @@ public class TelaJogo extends JFrame implements ActionListener {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         JButton botaoClicado = (JButton) e.getSource();
+                        
+                        if (VezesJogadas >= QuantidadeDeJogadas) {
+                            return;
+                        }
+
                         int coluna = -1;
                         int linha = -1;
-
+                        
                         // Encontra a posição do botão clicado na matriz de botões
                         for (int i = 0; i < 5; i++) {
                             for (int j = 0; j < 5; j++) {
@@ -125,12 +134,20 @@ public class TelaJogo extends JFrame implements ActionListener {
 
                         // Atualiza informações com a quantidade de navios encontrados
                         informacoes.setText("Há " + naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha + " navio(s) nessa linha");
-
+                        
+                        //"trava" o botão para não ser clicado outra vez por engao
+                        botaoClicado.setEnabled(false);
+                        
                         //texto do botão clicado
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
                             botaoClicado.setText("*");
                         } else {
                             botaoClicado.setText("X");
+                        }
+                        VezesJogadas++; // sobe o contador de vezes jogadas
+                        
+                        if (VezesJogadas >= QuantidadeDeJogadas) { //mensagem quando a quantidade de jogadas atingirem o limite
+                            informacoes.setText("Fim do jogo! Você atingiu a quantidade máxima de jogadas.");
                         }
                     }
 
