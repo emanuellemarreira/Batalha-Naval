@@ -36,7 +36,6 @@ public class TelaInicial extends JFrame implements ActionListener {
 
         new Thread(() -> reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav")).start();
 
-
         setVisible(true);
     }
 
@@ -153,11 +152,21 @@ private JPanel criarTelaInicialPanel() {
         }
     }
 
-    private void pararmusica() {
-        isPlaying = false;
-        line.stop();
-        line.close();
+    private void paraControleMusica() {
+        if (isPlaying) {
+            isPlaying = false;
+            if (line != null) {
+                line.stop();
+                line.close();
+            }
+        } else {
+            isPlaying = true;
+            if (line != null) {
+                line.start();
+            }
+        }
     }
+
 
     public static void main(String[] args) {
         try {
