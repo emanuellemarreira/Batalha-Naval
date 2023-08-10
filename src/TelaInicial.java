@@ -107,6 +107,13 @@ private JPanel criarTelaInicialPanel() {
                 System.exit(0);
             }
         });
+        
+        musicButton.addActionListener(new ActionListener(){
+        	@Override
+            public void actionPerformed(ActionEvent event) {
+                paraControleMusica();
+            }
+        });
 
         // Adicionando os botões ao painel de menu inicial:
         Telamenuinicial.add(novoJogoButton);
