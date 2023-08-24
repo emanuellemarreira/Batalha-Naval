@@ -12,6 +12,10 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class TelaInicial extends JFrame implements ActionListener {
     private boolean isPlaying = true;
+    private JToggleButton musicButton;
+    private ImageIcon fotoMusicaTocando;
+    private ImageIcon fotoMusicaPausada;
+    private boolean isMusicPlaying = false;
 
     public TelaInicial() {
         setTitle("BATALHA NAVAL");
@@ -63,12 +67,17 @@ public class TelaInicial extends JFrame implements ActionListener {
         sairButton.setBounds(250, 370, 100, 50);
         sairButton.setContentAreaFilled(false);
         sairButton.setBorderPainted(false);
-        String caminhomu = "imagens/BotaoSai.jpeg";
-        ImageIcon fotomu = new ImageIcon(caminhomu);
-        JButton musicButton = new JButton(fotomu);
+        String caminhomuTocando = "imagens/Botaosom.jpeg";
+        fotoMusicaTocando = new ImageIcon(caminhomuTocando);
+        String caminhomuPausada = "imagens/Botaosem.jpeg";
+        fotoMusicaPausada = new ImageIcon(caminhomuPausada);
+        musicButton = new JToggleButton();
         musicButton.setBounds(10, 5, 50, 50);
         musicButton.setContentAreaFilled(false);
         musicButton.setBorderPainted(false);
+        musicButton.setIcon(fotoMusicaTocando);
+        musicButton.setSelected(isMusicPlaying);
+
 
         // Criando um novo painel para o título e centralizando:
         String caminhoDaImagem = "imagens/Titulo.png";
@@ -107,6 +116,7 @@ public class TelaInicial extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent event) {
                 toggleMusica();
+                atualizarBotaoMusica();
             }
         });
 
@@ -121,31 +131,45 @@ public class TelaInicial extends JFrame implements ActionListener {
         return Telamenuinicial;
     }
 
+
     private Clip clip;
     private long position; // Variável para armazenar a posição da reprodução
 
     private void toggleMusica() {
-        if (isPlaying) {
-            paraControleMusica();
-            isPlaying = false;
-        } else {
+        isMusicPlaying = !isMusicPlaying; // Alterna o estado da música
+
+        if (isMusicPlaying) {
             reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
-            isPlaying = true;
+        } else {
+            paraControleMusica();
+        }
+
+        atualizarBotaoMusica(); // Atualiza a imagem do botão após as ações
+    }
+
+    private void atualizarBotaoMusica() {
+        if (isMusicPlaying) {
+            musicButton.setIcon(fotoMusicaTocando);
+        } else {
+            musicButton.setIcon(fotoMusicaPausada);
         }
     }
 
     private void reproduzirMusica(String filePath) {
         try {
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
-            clip = AudioSystem.getClip();
-            clip.open(audioStream);
+            if (!isMusicPlaying) {
+                AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
+                clip = AudioSystem.getClip();
+                clip.open(audioStream);
 
-            // Verifica se há uma posição armazenada para continuar a reprodução
-            if (position > 0) {
-                clip.setMicrosecondPosition(position); // Define a posição da reprodução
+                if (position > 0) {
+                    clip.setMicrosecondPosition(position);
+                }
+
+                clip.start();
+                isMusicPlaying = true;
+                atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música
             }
-
-            clip.start();
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
@@ -153,9 +177,11 @@ public class TelaInicial extends JFrame implements ActionListener {
 
     private void paraControleMusica() {
         if (clip != null && clip.isRunning()) {
-            position = clip.getMicrosecondPosition(); // Armazena a posição da reprodução
+            position = clip.getMicrosecondPosition();
             clip.stop();
             clip.close();
+            isMusicPlaying = false; // Atualiza o estado da música
+            atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música
         }
     }
 

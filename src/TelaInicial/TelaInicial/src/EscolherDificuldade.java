@@ -26,7 +26,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         };
         TelaDificuldade.setLayout(null);
 
-        String caminhofa = "imagens/Botaojo.jpeg";
+        String caminhofa = "imagens/Botaofa.jpeg";
         ImageIcon fotofa = new ImageIcon(caminhofa);
         JButton facil = new JButton(fotofa);
         facil.setBounds(100, 250, 100, 50);
@@ -40,7 +40,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
             }
         });
 
-        String caminhome = "imagens/BotaoSai.jpeg";
+        String caminhome = "imagens/Botaome.jpeg";
         ImageIcon fotome = new ImageIcon(caminhome);
         JButton medio = new JButton(fotome);
         medio.setBounds(250, 250, 100, 50);
@@ -53,7 +53,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
             }
         });
 
-        String caminhodi = "imagens/Botaoso.jpeg";
+        String caminhodi = "imagens/Botaodi.jpeg";
         ImageIcon fotodi = new ImageIcon(caminhodi);
         JButton dificil = new JButton(fotodi);
         dificil.setBounds(400, 250, 100, 50);
@@ -67,7 +67,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
             }
         });
 
-        String caminhovo = "imagens/Botaoso.jpeg";
+        String caminhovo = "imagens/Botaovo.jpeg";
         ImageIcon fotovo = new ImageIcon(caminhovo);
         JButton voltar = new JButton(fotovo);
         voltar.setBounds(490, 510, 100, 50);
