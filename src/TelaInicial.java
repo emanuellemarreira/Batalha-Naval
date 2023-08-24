@@ -79,7 +79,7 @@ private JPanel criarTelaInicialPanel() {
         novoJogoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new TelaJogo();
+            	SwingUtilities.invokeLater(() -> new EscolherDificuldade());
             }
         });
         // ActionListener do botão sobre:

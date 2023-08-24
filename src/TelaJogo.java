@@ -11,12 +11,19 @@ import javax.swing.*;
 // A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
 // A classe Tela jogo implementa ActionListener para ser capaz de responder à ações como clicar
 public class TelaJogo extends JFrame implements ActionListener {
-    
 	JLabel informacoes;
-	int QuantidadeDeJogadas = 5; //quantidade máxima de jogadas
-	int VezesJogadas = 0; // contador de jogadas feitas
-
-    public TelaJogo() {
+	int QuantidadeDeJogadas = 0; //quantidade máxima de jogadas
+	int VezesJogadas = 0;
+    public TelaJogo(int dificuldade) {
+    	if(dificuldade == 1) {
+    		QuantidadeDeJogadas = 15;
+    	}
+    	if(dificuldade == 2) {
+    		QuantidadeDeJogadas = 10;
+    	}
+    	if(dificuldade == 3) {
+    		QuantidadeDeJogadas = 7;
+    	}
     	//Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
         
@@ -167,11 +174,10 @@ public class TelaJogo extends JFrame implements ActionListener {
         janela.setBounds(300, 300, 300, 300);
         janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         janela.setVisible(true);
+        
     }
-
-    public static void main(String args[]) {
-        new TelaJogo();
-    }
+    
+    
 
     @Override
     public void actionPerformed(ActionEvent e) {
