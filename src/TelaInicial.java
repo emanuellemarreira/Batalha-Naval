@@ -2,51 +2,39 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.sound.sampled.*;
 import java.io.File;
 import java.io.IOException;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class TelaInicial extends JFrame implements ActionListener {
-
     private boolean isPlaying = true;
-    private SourceDataLine line;
 
     public TelaInicial() {
-        // Criando a janela do menu inicial:
         setTitle("BATALHA NAVAL");
         setBounds(300, 300, 600, 600);
-        setUndecorated(true);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+        setUndecorated(true);
         setExtendedState(JFrame.NORMAL);
 
-        // Crie um JTabbedPane
-        JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-        tabbedPane.setBorder(BorderFactory.createEmptyBorder());
-
-        // Crie os painéis para as abas do JTabbedPane
         JPanel telaInicialPanel = criarTelaInicialPanel();
-
-        // Adicione os painéis como abas do JTabbedPane
-        tabbedPane.addTab(null, telaInicialPanel);
-
-        // Adicione o JTabbedPane à janela
-        add(tabbedPane);
-
-        new Thread(() -> reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav")).start();
+        add(telaInicialPanel);
 
         setVisible(true);
+        reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
     }
 
-private JPanel criarTelaInicialPanel() {
-        // Criando painel de menu inicial
+    private JPanel criarTelaInicialPanel() {
         JPanel Telamenuinicial = new JPanel() {
-            // Sobrescreva o método paintComponent para desenhar a imagem de fundo
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                String caminhoDati = "imagens/WhatsApp Image 2023-07-30 at 01.18.49.jpeg";
+                String caminhoDati = "imagens/TelaInicio.jpg";
                 ImageIcon imagemti = new ImageIcon(caminhoDati);
                 Image img = imagemti.getImage();
                 g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
@@ -56,40 +44,47 @@ private JPanel criarTelaInicialPanel() {
 
 
         // Criando os botões do menu inicial:
-        String caminhonj = "imagens/pngwing.com.png";
+        String caminhonj = "imagens/Botaojo.jpeg";
         ImageIcon fotonj = new ImageIcon(caminhonj);
         JButton novoJogoButton = new JButton(fotonj);
         novoJogoButton.setLocation(250, 250);
-        novoJogoButton.setSize(110,50);
+        novoJogoButton.setSize(100,50);
         novoJogoButton.setContentAreaFilled(false);
         novoJogoButton.setBorderPainted(false);
-        String caminhoso = "imagens/59060c290cbeef0acff9a659 (1).png";
+        String caminhoso = "imagens/Botaoso.jpeg";
         ImageIcon fotoso = new ImageIcon(caminhoso);
         JButton sobreButton = new JButton(fotoso);
-        sobreButton.setBounds(220, 310, 160, 50);
+        sobreButton.setBounds(250, 310, 100, 50);
         sobreButton.setContentAreaFilled(false);
         sobreButton.setBorderPainted(false);
-        String caminhosa = "imagens/ir.png";
+        String caminhosa = "imagens/BotaoSai.jpeg";
         ImageIcon fotosa = new ImageIcon(caminhosa);
         JButton sairButton = new JButton(fotosa);
-        sairButton.setBounds(270, 370, 50, 50);
+        sairButton.setBounds(250, 370, 100, 50);
         sairButton.setContentAreaFilled(false);
         sairButton.setBorderPainted(false);
-        JButton musicButton = new JButton("Musga");
+        String caminhomu = "imagens/BotaoSai.jpeg";
+        ImageIcon fotomu = new ImageIcon(caminhomu);
+        JButton musicButton = new JButton(fotomu);
         musicButton.setBounds(10, 5, 50, 50);
+        musicButton.setContentAreaFilled(false);
+        musicButton.setBorderPainted(false);
 
         // Criando um novo painel para o título e centralizando:
-        String caminhoDaImagem = "imagens/dc3d2c5cc28562c174703cded1ed335e.png";
+        String caminhoDaImagem = "imagens/Titulo.png";
         ImageIcon imagemIcone = new ImageIcon(caminhoDaImagem);
         JLabel labelTitulo = new JLabel(imagemIcone);
-        labelTitulo.setBounds(40, 50, 500, 99);
+        labelTitulo.setBounds(40, 90, 500, 99);
         Telamenuinicial.add(labelTitulo);
-    
+
         // ActionListeners
         novoJogoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new TelaJogo();
+                SwingUtilities.invokeLater(() -> {
+                    EscolherDificuldade escolherDificuldade = new EscolherDificuldade(TelaInicial.this);
+                    setVisible(false); // Oculta a janela atual após a nova janela ser exibida
+                });
             }
         });
         // ActionListener do botão sobre:
@@ -107,70 +102,60 @@ private JPanel criarTelaInicialPanel() {
                 System.exit(0);
             }
         });
-        
+
         musicButton.addActionListener(new ActionListener(){
-        	@Override
+            @Override
             public void actionPerformed(ActionEvent event) {
-                paraControleMusica();
+                toggleMusica();
             }
         });
+
 
         // Adicionando os botões ao painel de menu inicial:
         Telamenuinicial.add(novoJogoButton);
         Telamenuinicial.add(sobreButton);
         Telamenuinicial.add(sairButton);
+        Telamenuinicial.add(musicButton);
 
 
         return Telamenuinicial;
     }
 
+    private Clip clip;
+    private long position; // Variável para armazenar a posição da reprodução
+
+    private void toggleMusica() {
+        if (isPlaying) {
+            paraControleMusica();
+            isPlaying = false;
+        } else {
+            reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
+            isPlaying = true;
+        }
+    }
+
     private void reproduzirMusica(String filePath) {
         try {
-            File audioFile = new File(filePath);
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-            AudioFormat format = audioStream.getFormat();
-            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File(filePath));
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
 
-            if (!AudioSystem.isLineSupported(info)) {
-                System.err.println("Line not supported");
-                return;
+            // Verifica se há uma posição armazenada para continuar a reprodução
+            if (position > 0) {
+                clip.setMicrosecondPosition(position); // Define a posição da reprodução
             }
 
-            line = (SourceDataLine) AudioSystem.getLine(info);
-            line.open(format);
-            line.start();
-
-            int bufferSize = 4096;
-            byte[] buffer = new byte[bufferSize];
-            int bytesRead = 0;
-
-            while (isPlaying && bytesRead != -1) {
-                bytesRead = audioStream.read(buffer, 0, buffer.length);
-                if (bytesRead >= 0) {
-                    line.write(buffer, 0, bytesRead);
-                }
-            }
-
-            line.drain();
-            line.close();
-            audioStream.close();
+            clip.start();
         } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
             e.printStackTrace();
         }
     }
 
     private void paraControleMusica() {
-        if (isPlaying) {
-            isPlaying = false;
-            if (line != null) {
-                line.stop();
-                line.close();
-            }
-        } else {
-            isPlaying = true;
-            if (line != null) {
-                line.start();
-            }
+        if (clip != null && clip.isRunning()) {
+            position = clip.getMicrosecondPosition(); // Armazena a posição da reprodução
+            clip.stop();
+            clip.close();
         }
     }
 
