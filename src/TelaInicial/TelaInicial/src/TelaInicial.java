@@ -100,7 +100,8 @@ public class TelaInicial extends JFrame implements ActionListener {
         sobreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new ExibirCreditos();
+                ExibirCreditos exibirCreditos = new ExibirCreditos(TelaInicial.this);
+                setVisible(false);
             }
         });
 
@@ -112,14 +113,18 @@ public class TelaInicial extends JFrame implements ActionListener {
             }
         });
 
-        musicButton.addActionListener(new ActionListener(){
+        musicButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
                 toggleMusica();
                 atualizarBotaoMusica();
+                if (isMusicPlaying) {
+                    clip.start();
+                } else {
+                    clip.stop();
+                }
             }
         });
-
 
         // Adicionando os botões ao painel de menu inicial:
         Telamenuinicial.add(novoJogoButton);
@@ -139,13 +144,21 @@ public class TelaInicial extends JFrame implements ActionListener {
         isMusicPlaying = !isMusicPlaying; // Alterna o estado da música
 
         if (isMusicPlaying) {
-            reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
+            if (clip == null) {
+                reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
+            } else {
+                if (!clip.isRunning() && position > 0) {
+                    clip.setMicrosecondPosition(position);
+                }
+                clip.start();
+            }
         } else {
             paraControleMusica();
         }
 
         atualizarBotaoMusica(); // Atualiza a imagem do botão após as ações
     }
+
 
     private void atualizarBotaoMusica() {
         if (isMusicPlaying) {
@@ -180,9 +193,9 @@ public class TelaInicial extends JFrame implements ActionListener {
             position = clip.getMicrosecondPosition();
             clip.stop();
             clip.close();
-            isMusicPlaying = false; // Atualiza o estado da música
-            atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música
         }
+        isMusicPlaying = false; // Atualiza o estado da música
+        atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música
     }
 
 
