@@ -6,6 +6,11 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import java.net.URL;
+import javax.imageio.ImageIO;
+import java.awt.Dimension;
+
 
 import javax.swing.*;
 // A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
@@ -14,6 +19,11 @@ public class TelaJogo extends JFrame implements ActionListener {
     JLabel informacoes;
 
     public TelaJogo() {
+        // Carregar ícones a partir de URLs
+        ImageIcon aguaIcon = createImageIconFromURL("https://i.imgur.com/mLXvLKQ.jpg");    // Ícone para água (não contém navio)
+        ImageIcon navioIcon = createImageIconFromURL("https://i.imgur.com/KjpIXx8.jpg");   // Ícone para navio
+        ImageIcon tiroIcon = createImageIconFromURL("https://i.imgur.com/XkECuvd.jpg");     // Ícone para tiro (clicou, não tem navio)
+
         //Criação da Tela
         JFrame janela = new JFrame("Batalha Naval");
 
@@ -74,25 +84,30 @@ public class TelaJogo extends JFrame implements ActionListener {
             }
         }
         // GridBagConstraints fornece as coodenadas de cada botão
+        tabuleiro.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
 
         //matriz de botoes
-        JButton[][] botoes = new JButton[5][5];
+        JToggleButton[][] botoes = new JToggleButton[5][5];
         informacoes = new JLabel("teste");
         //configurandos os botoes
         for (int i = 0; i<5; i++) {
             for (int j = 0; j<5; j++) {
-                JButton b = new JButton("~");
+                JToggleButton b = new JToggleButton(aguaIcon);
                 botoes[i][j] = b;
                 gbc.gridx = i;
                 gbc.gridy = j;
+                gbc.weightx = 1.0; // Expandir horizontalmente
+                gbc.weighty = 1.0; // Expandir verticalmente
                 botoes[i][j].putClientProperty("temNavio", mapanavios[i][j]);
+                Dimension buttonSize = new Dimension(50, 50);
+                b.setPreferredSize(buttonSize);
                 tabuleiro.add(botoes[i][j], gbc);
-                botoes[i][j].addActionListener(new ActionListener() {
-
+                b.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JButton botaoClicado = (JButton) e.getSource();
+                        JToggleButton botaoClicado = (JToggleButton) e.getSource();
                         int coluna = -1;
                         int linha = -1;
                         for (int i = 0; i < 5; i++) {
@@ -115,9 +130,9 @@ public class TelaJogo extends JFrame implements ActionListener {
                             }
                         }
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
-                            botaoClicado.setText("*");
-                        } else {
-                            botaoClicado.setText("X");
+                            botaoClicado.setIcon(navioIcon);
+                        }  else {
+                            botaoClicado.setIcon(tiroIcon);
                         }
                         informacoes.setText("Há "+ naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha+ " navio(s) nessa linha");
                     }
@@ -125,6 +140,11 @@ public class TelaJogo extends JFrame implements ActionListener {
                 });
             }
         }
+
+
+        janela.pack(); // Faz a janela se ajustar automaticamente ao tamanho dos componentes
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setVisible(true);
 
         JPanel info = new JPanel();
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -139,6 +159,16 @@ public class TelaJogo extends JFrame implements ActionListener {
         janela.setVisible(true);
     }
 
+    private ImageIcon createImageIconFromURL(String url) {
+        try {
+            URL imageURL = new URL(url);
+            return new ImageIcon(ImageIO.read(imageURL));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static void main(String args[]) {
         new TelaJogo();
     }
@@ -149,4 +179,3 @@ public class TelaJogo extends JFrame implements ActionListener {
         throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }
-
