@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import java.awt.Dimension;
 
 
 import javax.swing.*;
@@ -156,6 +157,11 @@ public class TelaJogo extends JFrame implements ActionListener {
             }
         }
 
+
+        janela.pack(); // Faz a janela se ajustar automaticamente ao tamanho dos componentes
+        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        janela.setVisible(true);
+
         JPanel info = new JPanel();
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
         info.add(informacoes);
@@ -165,6 +171,16 @@ public class TelaJogo extends JFrame implements ActionListener {
         caixa.add(info);
 
         setVisible(true);
+    }
+
+    private ImageIcon createImageIconFromURL(String url) {
+        try {
+            URL imageURL = new URL(url);
+            return new ImageIcon(ImageIO.read(imageURL));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     private ImageIcon createImageIconFromURL(String url) {
