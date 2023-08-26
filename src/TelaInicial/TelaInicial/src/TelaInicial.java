@@ -144,13 +144,8 @@ public class TelaInicial extends JFrame implements ActionListener {
         isMusicPlaying = !isMusicPlaying; // Alterna o estado da música
 
         if (isMusicPlaying) {
-            if (clip == null) {
+            if (clip == null||!clip.isRunning()) {
                 reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
-            } else {
-                if (!clip.isRunning() && position > 0) {
-                    clip.setMicrosecondPosition(position);
-                }
-                clip.start();
             }
         } else {
             paraControleMusica();
@@ -192,7 +187,7 @@ public class TelaInicial extends JFrame implements ActionListener {
         if (clip != null && clip.isRunning()) {
             position = clip.getMicrosecondPosition();
             clip.stop();
-            clip.close();
+            //clip.close();
         }
         isMusicPlaying = false; // Atualiza o estado da música
         atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música

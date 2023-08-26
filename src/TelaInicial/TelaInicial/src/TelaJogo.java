@@ -1,11 +1,11 @@
-import java.awt.Container;
+import java.awt.*;
 import java.util.Random;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import java.net.URL;
+import javax.imageio.ImageIO;
+
 
 import javax.swing.*;
 // A classe Tela jogo extende a classe JFrame o que significa que vamos criar uma janela
@@ -14,14 +14,35 @@ public class TelaJogo extends JFrame implements ActionListener {
     JLabel informacoes;
 
     public TelaJogo() {
-        //Criação da Tela
-        JFrame janela = new JFrame("Batalha Naval");
+        // Carregar ícones a partir de URLs
+        ImageIcon aguaIcon = createImageIconFromURL("https://i.imgur.com/mLXvLKQ.jpg");    // Ícone para água (não contém navio)
+        ImageIcon navioIcon = createImageIconFromURL("https://i.imgur.com/KjpIXx8.jpg");   // Ícone para navio
+        ImageIcon tiroIcon = createImageIconFromURL("https://i.imgur.com/XkECuvd.jpg");     // Ícone para tiro (clicou, não tem navio)
+
+        // Configurações da janela
+        setTitle("Batalha Naval");
+        setSize(600, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setResizable(false);
+        setUndecorated(true);
 
         //Criando container (onde vão ficar botões, rotulos, paineis, etc)
-        Container caixa = janela.getContentPane();
+        Container caixa = getContentPane();
+        OverlayLayout overlayLayout = new OverlayLayout(caixa);
+        caixa.setLayout(overlayLayout);
 
         //Criando tabuleiro
-        JPanel tabuleiro = new JPanel();
+        JPanel tabuleiro = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                String caminhoDatj = "imagens/Telajo.png";
+                ImageIcon imagemtj = new ImageIcon(caminhoDatj);
+                Image img = imagemtj.getImage();
+                g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
         tabuleiro.setLayout(new GridBagLayout());
 
         //Criando gerador de numero aleatorio
@@ -74,25 +95,34 @@ public class TelaJogo extends JFrame implements ActionListener {
             }
         }
         // GridBagConstraints fornece as coodenadas de cada botão
+        tabuleiro.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.BOTH;
 
         //matriz de botoes
-        JButton[][] botoes = new JButton[5][5];
-        informacoes = new JLabel("teste");
+        JToggleButton[][] botoes = new JToggleButton[5][5];
+        informacoes = new JLabel("Aperte em uma das casas");
         //configurandos os botoes
         for (int i = 0; i<5; i++) {
             for (int j = 0; j<5; j++) {
-                JButton b = new JButton("~");
+                JToggleButton b = new JToggleButton(aguaIcon);
+                b.setContentAreaFilled(false);
+                b.setBorderPainted(false);
                 botoes[i][j] = b;
                 gbc.gridx = i;
                 gbc.gridy = j;
+                gbc.weightx = 0; // Deixar a matriz de botões unida
+                gbc.weighty = 0; // Deixar a matriz de botões unida
                 botoes[i][j].putClientProperty("temNavio", mapanavios[i][j]);
+                Dimension buttonSize = new Dimension(50, 50);
+                b.setPreferredSize(buttonSize);
+                b.setMaximumSize(buttonSize);
+                b.setMinimumSize(buttonSize);
                 tabuleiro.add(botoes[i][j], gbc);
-                botoes[i][j].addActionListener(new ActionListener() {
-
+                b.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JButton botaoClicado = (JButton) e.getSource();
+                        JToggleButton botaoClicado = (JToggleButton) e.getSource();
                         int coluna = -1;
                         int linha = -1;
                         for (int i = 0; i < 5; i++) {
@@ -115,9 +145,9 @@ public class TelaJogo extends JFrame implements ActionListener {
                             }
                         }
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
-                            botaoClicado.setText("*");
-                        } else {
-                            botaoClicado.setText("X");
+                            botaoClicado.setIcon(navioIcon);
+                        }  else {
+                            botaoClicado.setIcon(tiroIcon);
                         }
                         informacoes.setText("Há "+ naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha+ " navio(s) nessa linha");
                     }
@@ -134,9 +164,17 @@ public class TelaJogo extends JFrame implements ActionListener {
         caixa.add(tabuleiro);
         caixa.add(info);
 
-        janela.setBounds(300, 300, 300, 300);
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        janela.setVisible(true);
+        setVisible(true);
+    }
+
+    private ImageIcon createImageIconFromURL(String url) {
+        try {
+            URL imageURL = new URL(url);
+            return new ImageIcon(ImageIO.read(imageURL));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String args[]) {
@@ -149,4 +187,3 @@ public class TelaJogo extends JFrame implements ActionListener {
         throw new UnsupportedOperationException("Unimplemented method 'actionPerformed'");
     }
 }
-
