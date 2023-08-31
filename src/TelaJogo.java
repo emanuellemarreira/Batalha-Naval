@@ -144,7 +144,7 @@ public class TelaJogo extends JFrame implements ActionListener {
                         
                         //"trava" o botão para não ser clicado outra vez por engao
                         botaoClicado.setEnabled(false);
-                        
+                        botaoClicado.requestFocus();
                         //texto do botão clicado
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
                             botaoClicado.setText("*");
