@@ -7,14 +7,24 @@ import javax.imageio.ImageIO;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
-public class TelaJogo extends JFrame implements ActionListener{
+public class TelaJogo extends JFrame implements ActionListener {
     JLabel informacoes;
 
     public TelaJogo() {
+        // Criando container (onde vão ficar botões, rótulos, painéis, etc)
+        Container caixa = getContentPane();
+        caixa.setLayout(new BorderLayout());
+
+        // Carregar imagem de fundo a partir de URL
+        String urlImagemDeFundo = "https://i.imgur.com/GS7tI7Q.png"; // Substitua pela URL real
+        ImageIcon imagemDeFundo = createImageIconFromURL(urlImagemDeFundo);
+        BackgroundPanel painelDeFundo = new BackgroundPanel(imagemDeFundo.getImage());
+        caixa.add(painelDeFundo);
+
         // Carregar ícones a partir de URLs
         ImageIcon aguaIcon = createImageIconFromURL("https://i.imgur.com/mLXvLKQ.jpg");    // Ícone para água (não contém navio)
         ImageIcon navioIcon = createImageIconFromURL("https://i.imgur.com/KjpIXx8.jpg");   // Ícone para navio
-        ImageIcon tiroIcon = createImageIconFromURL("https://i.imgur.com/XkECuvd.jpg");     // Ícone para tiro (clicou, não tem navio)
+        ImageIcon tiroIcon = createImageIconFromURL("https://i.imgur.com/XkECuvd.jpg");   // Ícone para tiro (clicou, não tem navio)
 
         // Configurações da janela
         setTitle("Batalha Naval");
@@ -22,12 +32,7 @@ public class TelaJogo extends JFrame implements ActionListener{
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setResizable(false);
-        setUndecorated(true);
-
-        // Criando container (onde vão ficar botões, rótulos, painéis, etc)
-        Container caixa = getContentPane();
-        OverlayLayout overlayLayout = new OverlayLayout(caixa);
-        caixa.setLayout(overlayLayout);
+        setUndecorated(false);
 
         // Criando tabuleiro
         JPanel tabuleiro = new JPanel() {
@@ -41,6 +46,15 @@ public class TelaJogo extends JFrame implements ActionListener{
             }
         };
         tabuleiro.setLayout(new GridBagLayout());
+
+        // Configurando a caixa para ter um layout vertical (topo para baixo)
+        caixa.setLayout(new BoxLayout(caixa, BoxLayout.PAGE_AXIS));
+
+        // Adicionando os componentes na caixa de conteúdo
+        caixa.add(tabuleiro);
+        caixa.add(painelDeFundo);
+        caixa.setLayout(new FlowLayout(FlowLayout.CENTER));
+
 
         // Criando gerador de número aleatório
         Random gerador = new Random();
@@ -90,6 +104,8 @@ public class TelaJogo extends JFrame implements ActionListener{
             }
         }
 
+        // Configurando a caixa para ter um layout vertical (topo para baixo)
+        caixa.setLayout(new BoxLayout(caixa, BoxLayout.Y_AXIS));
         // GridBagConstraints fornece as coordenadas de cada botão
         tabuleiro.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -148,21 +164,32 @@ public class TelaJogo extends JFrame implements ActionListener{
                         }
                         informacoes.setText("Há " + naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha + " navio(s) nessa linha");
                     }
-                });
-            }
-        }
-        
-        tabuleiro.setVisible(true);
 
+                });
+                tabuleiro.setVisible(true);
+            }
+
+        }
         JPanel info = new JPanel();
+        caixa.setLayout(new GridLayout(5, 5));
+        caixa.add(tabuleiro);
+        caixa.add(info);
+        caixa.add(painelDeFundo);
         info.setLayout(new FlowLayout(FlowLayout.CENTER));
         info.add(informacoes);
 
-        caixa.setLayout(new GridLayout(2, 1));
-        caixa.add(tabuleiro);
-        caixa.add(info);
+
+        // Criando um painel que conterá o tabuleiro e as informações
+        JPanel contentPane = new JPanel(new BorderLayout());
+        contentPane.add(tabuleiro, BorderLayout.CENTER);
+        contentPane.add(info, BorderLayout.SOUTH);
+
+        // Definindo o painel de conteúdo como o conteúdo da janela
+        setContentPane(caixa);
+        setContentPane(contentPane);
 
         setVisible(true);
+        painelDeFundo.setVisible(true);
     }
 
     private ImageIcon createImageIconFromURL(String url) {
@@ -176,11 +203,28 @@ public class TelaJogo extends JFrame implements ActionListener{
     }
 
     public static void main(String args[]) {
-        new TelaJogo();
+        SwingUtilities.invokeLater(TelaJogo::new);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
     }
 }
+
+class BackgroundPanel extends JPanel {
+    private final Image backgroundImage;
+
+    public BackgroundPanel(Image image) {
+        this.backgroundImage = image;
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        if (backgroundImage != null) {
+            int x = (getWidth() - backgroundImage.getWidth(this)) ;
+            int y = (getHeight() - backgroundImage.getHeight(this)) ;
+            g.drawImage(backgroundImage, x, y, this);
+        }
+    }}
