@@ -39,7 +39,7 @@ public class ExibirCreditos extends JFrame {
             @Override
             public void actionPerformed(ActionEvent event) {
                 telaInicial.setVisible(true);
-                dispose();
+                Janelacreditos.dispose();
             }
         });
         Fotocreditos.add(voltarButton);

@@ -36,7 +36,8 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         facil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new TelaJogo(1);
+            	new TelaJogo(1);
+                frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
 
@@ -50,6 +51,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent event) {
                 new TelaJogo(2);
+                frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
 
@@ -64,6 +66,7 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent event) {
                 new TelaJogo(3);
+                frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
 

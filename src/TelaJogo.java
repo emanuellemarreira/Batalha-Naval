@@ -12,6 +12,7 @@ public class TelaJogo extends JFrame implements ActionListener {
     int QuantidadeDeJogadas = 0; //quantidade máxima de jogadas
     int VezesJogadas = 0;
     public TelaJogo(int dificuldade) {
+    	
         if(dificuldade == 1) {
             QuantidadeDeJogadas = 15;
         }
@@ -21,6 +22,7 @@ public class TelaJogo extends JFrame implements ActionListener {
         if(dificuldade == 3) {
             QuantidadeDeJogadas = 7;
         }
+    }
 
     public TelaJogo() {
         // Criando container (onde vão ficar botões, rótulos, painéis, etc)
@@ -188,7 +190,7 @@ public class TelaJogo extends JFrame implements ActionListener {
                             informacoes.setText("Fim do jogo! Você atingiu a quantidade máxima de jogadas.");
                     }
 
-                });
+                }});
 
                 tabuleiro.setVisible(true);
             }
@@ -234,6 +236,7 @@ public class TelaJogo extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
     }
 }
+
 
 class BackgroundPanel extends JPanel {
     private final Image backgroundImage;

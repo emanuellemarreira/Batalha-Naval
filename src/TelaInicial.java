@@ -93,6 +93,7 @@ public class TelaInicial extends JFrame implements ActionListener {
                 SwingUtilities.invokeLater(() -> {
                     EscolherDificuldade escolherDificuldade = new EscolherDificuldade(TelaInicial.this);
                     setVisible(false); // Oculta a janela atual após a nova janela ser exibida
+                    dispose();
                 });
             }
         });
