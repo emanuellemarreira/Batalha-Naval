@@ -19,6 +19,7 @@ public class TelaJogo extends JFrame implements ActionListener {
     private boolean isMusicPlaying = false;
     int QuantidadeDeJogadas = 0; //quantidade máxima de jogadas
     int VezesJogadas = 0;
+    int naviosencontrados = 0;
     private EscolherDificuldade escolherDificuldade;
     public TelaJogo(EscolherDificuldade escolherDificuldade) {
         setResizable(false);
@@ -179,14 +180,15 @@ public class TelaJogo extends JFrame implements ActionListener {
                         int naviosNaLinha = 0;
                         int naviosNaColuna = 0;
                         for (int i = 0; i < 5; i++) {
-                            if (mapanavios[coluna][i] == 1) {
+                            if (mapanavios[i][coluna] == 1) {
                                 naviosNaLinha++;
                             }
-                            if (mapanavios[i][linha] == 1) {
+                            if (mapanavios[linha][i] == 1) {
                                 naviosNaColuna++;
                             }
                         }
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
+                        	naviosencontrados++;
                             botaoClicado.setDisabledIcon(navioIcon);
                         } else {
                             botaoClicado.setDisabledIcon(tiroIcon);
@@ -198,6 +200,9 @@ public class TelaJogo extends JFrame implements ActionListener {
 
                         if (VezesJogadas >= QuantidadeDeJogadas) { //mensagem quando a quantidade de jogadas atingirem o limite
                             informacoes.setText("Fim do jogo! Você atingiu a quantidade máxima de jogadas.");
+                        }
+                        if(naviosencontrados == 3) {
+                        	informacoes.setText("Parabéns! Você encontrou todos os navios!");
                         }
 
                     }});
