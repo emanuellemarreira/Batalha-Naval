@@ -27,7 +27,7 @@ public class ComoJogar extends JFrame {
         };
         Fotocj.setLayout(null);
 
-        String texto = "<html><body><div style='text-align: center; font-family: Arial; font-size: 16px; color: white;'>Tente acertar<br>a localização <br>de todos os barcos!<br>você terá um<br>número determinado de<br>tentativas em cada<br>dificuldade para<br>descobrir onde<br>estão os navios<br>em um mapa 5x5.<br>Será dado uma<br>dica de onde<br>os barcos estão<br>a cada tentativa<br>feita.<br>NIVEL FASSIO: 15 tentativas<br>NÍVEL MÉDIO: 10 tentativas<br>NÍVEL DIFÍCIL: 7 tentativas</div></body></html>";
+        String texto = "<html><body><div style='text-align: center; font-family: Arial; font-size: 16px; color: white;'>Tente acertar<br>a localização <br>de todos os barcos!<br>você terá um<br>número determinado de<br>tentativas em cada<br>dificuldade para<br>descobrir onde<br>estão os navios<br>em um mapa 5x5.<br>Será dado uma<br>dica de onde<br>os barcos estão<br>a cada tentativa<br>feita.<br>NIVEL FÁCIL: 15 tentativas<br>NÍVEL MÉDIO: 10 tentativas<br>NÍVEL DIFÍCIL: 7 tentativas</div></body></html>";
         JLabel label = new JLabel(texto);
         label.setBounds(40, 30, 500, 500);
         String legenda1 = "<html><body><div style='text-align: justify; font-family: Arial; font-size: 16px; color: white;'>Será que o barco<br>está aqui?</div></body></html>";
