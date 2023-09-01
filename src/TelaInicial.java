@@ -214,8 +214,7 @@ public class TelaInicial extends JFrame implements ActionListener {
         isMusicPlaying = false; // Atualiza o estado da música
         atualizarBotaoMusica(); // Atualiza o botão para refletir o estado da música
     }
-
-
+ 
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() -> new TelaInicial());

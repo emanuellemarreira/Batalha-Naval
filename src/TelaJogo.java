@@ -1,13 +1,22 @@
 import java.awt.*;
 import java.util.Random;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.Clip;
 import java.awt.Dimension;
 
 public class TelaJogo extends JFrame implements ActionListener {
     JLabel informacoes;
+    private boolean isMusicPlaying = false;
     int QuantidadeDeJogadas = 0; //quantidade máxima de jogadas
     int VezesJogadas = 0;
     private EscolherDificuldade escolherDificuldade;
@@ -148,8 +157,10 @@ public class TelaJogo extends JFrame implements ActionListener {
                 b.setMinimumSize(buttonSize);
                 tabuleiro.add(botoes[i][j], gbc);
                 b.addActionListener(new ActionListener() {
+                	
                     @Override
                     public void actionPerformed(ActionEvent e) {
+                    	toggleclick();
                         JToggleButton botaoClicado = (JToggleButton) e.getSource();
                         if (VezesJogadas >= QuantidadeDeJogadas) {
                             return;
@@ -226,7 +237,27 @@ public class TelaJogo extends JFrame implements ActionListener {
             return null;
         }
     }
+    
 
+    private Clip clipp;
+    
+    private void toggleclick() {
+        try {
+            
+        	AudioInputStream audioStream = AudioSystem.getAudioInputStream(new File("imagens/click.wav"));
+        	clipp = AudioSystem.getClip();
+        	clipp.open(audioStream);
+
+        	clipp.start();
+            
+            
+            
+        } catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+    }
+   
+    
     public static void main(String args[]) {
         TelaInicial telaInicial = new TelaInicial();
         EscolherDificuldade escolherDificuldade = new EscolherDificuldade(telaInicial);
