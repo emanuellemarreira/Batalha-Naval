@@ -64,9 +64,15 @@ public class TelaInicial extends JFrame implements ActionListener {
         String caminhosa = "imagens/BotaoSai.jpeg";
         ImageIcon fotosa = new ImageIcon(caminhosa);
         JButton sairButton = new JButton(fotosa);
-        sairButton.setBounds(250, 370, 100, 50);
+        sairButton.setBounds(250, 430, 100, 50);
         sairButton.setContentAreaFilled(false);
         sairButton.setBorderPainted(false);
+        String caminhocj = "imagens/Botaocj.jpeg";
+        ImageIcon fotocj = new ImageIcon(caminhocj);
+        JButton cjButton = new JButton(fotocj);
+        cjButton.setBounds(250, 370, 100, 50);
+        cjButton.setContentAreaFilled(false);
+        cjButton.setBorderPainted(false);
         String caminhomuTocando = "imagens/Botaosom.jpeg";
         fotoMusicaTocando = new ImageIcon(caminhomuTocando);
         String caminhomuPausada = "imagens/Botaosem.jpeg";
@@ -127,11 +133,20 @@ public class TelaInicial extends JFrame implements ActionListener {
             }
         });
 
+        cjButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ComoJogar comoJogar = new ComoJogar(TelaInicial.this);
+                setVisible(false);
+            }
+        });
+
         // Adicionando os botões ao painel de menu inicial:
         Telamenuinicial.add(novoJogoButton);
         Telamenuinicial.add(sobreButton);
         Telamenuinicial.add(sairButton);
         Telamenuinicial.add(musicButton);
+        Telamenuinicial.add(cjButton);
 
 
         return Telamenuinicial;
