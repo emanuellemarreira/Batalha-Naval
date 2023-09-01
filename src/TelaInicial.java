@@ -30,7 +30,7 @@ public class TelaInicial extends JFrame implements ActionListener {
         add(telaInicialPanel);
 
         setVisible(true);
-        reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
+        reproduzirMusica("imagens/Musicati.wav");
     }
 
     private JPanel criarTelaInicialPanel() {
@@ -161,7 +161,7 @@ public class TelaInicial extends JFrame implements ActionListener {
 
         if (isMusicPlaying) {
             if (clip == null||!clip.isRunning()) {
-                reproduzirMusica("imagens/The_Suburbs_-_Arcade_Fire.wav");
+                reproduzirMusica("imagens/Musicati.wav");
             }
         } else {
             paraControleMusica();
