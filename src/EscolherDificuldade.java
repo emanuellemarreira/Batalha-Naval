@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class EscolherDificuldade extends JFrame implements ActionListener {
     private TelaInicial telaInicial;
+    private int dificuldade;
     public EscolherDificuldade(TelaInicial telaInicial) {
         this.telaInicial = telaInicial;
         JFrame frame = new JFrame("DIFICULDADE");
@@ -36,7 +37,8 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         facil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-            	new TelaJogo(1);
+            	setDificuldade(1);
+            	TelaJogo TelaJogo = new TelaJogo(EscolherDificuldade.this);
                 frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
@@ -50,7 +52,13 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         medio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new TelaJogo(2);
+            	SwingUtilities.invokeLater(() -> {
+            		setDificuldade(2);
+            		TelaJogo TelaJogo = new TelaJogo(EscolherDificuldade.this);
+                    setVisible(false); // Oculta a janela atual após a nova janela ser exibida
+                    dispose();
+                });
+                //new TelaJogo(2);
                 frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
@@ -65,7 +73,8 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         dificil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                new TelaJogo(3);
+            	setDificuldade(3);
+            	TelaJogo TelaJogo = new TelaJogo(EscolherDificuldade.this);
                 frame.dispose(); //função para tela sumir apos clicar em alguma dificuldade
             }
         });
@@ -92,9 +101,15 @@ public class EscolherDificuldade extends JFrame implements ActionListener {
         frame.getContentPane().add(TelaDificuldade);
         frame.setVisible(true);
     }
+    
+    public void setDificuldade(int d) {
+		this.dificuldade = d;
+	}
+	public int getDificuldade() {
+		return dificuldade;
+	}
 
     public static void main(String[] args) {
-
         TelaInicial telaInicial = new TelaInicial();
         SwingUtilities.invokeLater(() -> new EscolherDificuldade(telaInicial));
     }

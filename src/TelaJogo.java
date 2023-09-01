@@ -5,26 +5,24 @@ import javax.swing.*;
 import java.net.URL;
 import javax.imageio.ImageIO;
 import java.awt.Dimension;
-import javax.swing.JFrame;
 
 public class TelaJogo extends JFrame implements ActionListener {
     JLabel informacoes;
     int QuantidadeDeJogadas = 0; //quantidade máxima de jogadas
     int VezesJogadas = 0;
-    public TelaJogo(int dificuldade) {
-    	
-        if(dificuldade == 1) {
+    private EscolherDificuldade escolherDificuldade;
+    public TelaJogo(EscolherDificuldade escolherDificuldade) {
+    	this.escolherDificuldade = escolherDificuldade;
+        if( escolherDificuldade.getDificuldade() == 1) {
             QuantidadeDeJogadas = 15;
         }
-        if(dificuldade == 2) {
+        if(escolherDificuldade.getDificuldade() == 2) {
             QuantidadeDeJogadas = 10;
         }
-        if(dificuldade == 3) {
+        if(escolherDificuldade.getDificuldade() == 3) {
             QuantidadeDeJogadas = 7;
         }
-    }
 
-    public TelaJogo() {
         // Criando container (onde vão ficar botões, rótulos, painéis, etc)
         Container caixa = getContentPane();
         caixa.setLayout(new BorderLayout());
@@ -229,7 +227,9 @@ public class TelaJogo extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-        SwingUtilities.invokeLater(TelaJogo::new);
+    	TelaInicial telaInicial = new TelaInicial();
+    	EscolherDificuldade escolherDificuldade = new EscolherDificuldade(telaInicial);
+        SwingUtilities.invokeLater(() -> new TelaJogo(escolherDificuldade));
     }
 
     @Override
