@@ -10,6 +10,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+
 public class TelaInicial extends JFrame implements ActionListener {
     private boolean isPlaying = true;
     private JToggleButton musicButton;
@@ -18,6 +19,11 @@ public class TelaInicial extends JFrame implements ActionListener {
     private boolean isMusicPlaying = false;
 
     public TelaInicial() {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setTitle("BATALHA NAVAL");
         setBounds(300, 300, 600, 600);
         setLocationRelativeTo(null);
@@ -211,12 +217,6 @@ public class TelaInicial extends JFrame implements ActionListener {
 
 
     public static void main(String[] args) {
-        try {
-            // Define o Look and Feel Windows (para sistemas Windows)
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         SwingUtilities.invokeLater(() -> new TelaInicial());
     }

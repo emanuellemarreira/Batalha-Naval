@@ -26,8 +26,9 @@ public class ExibirCreditos extends JFrame {
             }
         };
         Fotocreditos.setLayout(null);
-        String texto = "<html><body><div style='text-align: center; font-family: Arial; font-size: 20px; color: white;'>Jogo feito por:<br>Beatriz Guedes da Silva<br>Camila Vasconcelos Moi<br>Danilo Silva<br>Emanuelle Rocha Marreira<br>Gabriel Cortez de São Paulo Rozeno<br>Italo Ferreira Fonseca<br>Italo Guilherme Monte<br>João Vitor Silva de Carvalho<br>Jonatan da Silva Frota<br>Alunos de Engenharia de Computação pela UEA -<br>Universidade Estadual do Amazonas</div></body></html>";        JLabel label = new JLabel(texto);
-        label.setBounds(40, 5, 500, 500);
+        String texto = "<html><body><div style='text-align: center; font-family: Arial; font-size: 15px; color: white;'>Jogo feito por:<br>SCRUM MASTER:<br>Gabriel Cortez de São Paulo Rozeno<br>TESTER:<br>Danilo Silva de Paula<br>FRONT-ENDS:<br>Beatriz Guedes da Silva<br>Italo Ferreira Fonseca<br>Jonatan da Silva Frota<br>BACK-ENDS:<br>Camila Vasconcelos Moi<br>Italo Guilherme Monte<br>João Vitor Silva de Carvalho<br>Emanuelle Rocha Marreira<br>Alunos de Engenharia de Computação pela UEA<br>(Universidade Estadual do Amazonas)</div></body></html>";
+        JLabel label = new JLabel(texto);
+        label.setBounds(70, 5, 500, 500);
 
         String caminhovo = "imagens/Botaovo.jpeg";
         ImageIcon fotovo = new ImageIcon(caminhovo);
@@ -55,5 +56,6 @@ public class ExibirCreditos extends JFrame {
         SwingUtilities.invokeLater(() -> new ExibirCreditos(telaInicial));
     }
 }
+
 
 

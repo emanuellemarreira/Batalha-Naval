@@ -12,7 +12,8 @@ public class TelaJogo extends JFrame implements ActionListener {
     int VezesJogadas = 0;
     private EscolherDificuldade escolherDificuldade;
     public TelaJogo(EscolherDificuldade escolherDificuldade) {
-    	this.escolherDificuldade = escolherDificuldade;
+        setResizable(false);
+        this.escolherDificuldade = escolherDificuldade;
         if( escolherDificuldade.getDificuldade() == 1) {
             QuantidadeDeJogadas = 15;
         }
@@ -35,7 +36,7 @@ public class TelaJogo extends JFrame implements ActionListener {
 
         // Carregar ícones a partir de URLs
         ImageIcon aguaIcon = createImageIconFromURL("https://i.imgur.com/mLXvLKQ.jpg");    // Ícone para água (não contém navio)
-        ImageIcon navioIcon = createImageIconFromURL("https://i.imgur.com/KjpIXx8.jpg");   // Ícone para navio
+        ImageIcon navioIcon = createImageIconFromURL("https://i.imgur.com/hzS8Pog.jpeg");   // Ícone para navio
         ImageIcon tiroIcon = createImageIconFromURL("https://i.imgur.com/XkECuvd.jpg");   // Ícone para tiro (clicou, não tem navio)
 
         // Configurações da janela
@@ -75,48 +76,48 @@ public class TelaJogo extends JFrame implements ActionListener {
         int[][] mapanavios = new int[5][5];
         int contanavios = 0;
 
-            //Garantir que nunca vão ser gerados endereços iguais para dois navios
-            //Pode ser otimizado futuramente
-            int coluna1=-1;
-            int coluna2=-1;
-            int linha1=-1;
-            int linha2=-1;
-            for (int l =0; l <3; l++) {
-                int chave1 = gerador.nextInt(4) % 5;
-                int chave2 = gerador.nextInt(4) % 5;
+        //Garantir que nunca vão ser gerados endereços iguais para dois navios
+        //Pode ser otimizado futuramente
+        int coluna1=-1;
+        int coluna2=-1;
+        int linha1=-1;
+        int linha2=-1;
+        for (int l =0; l <3; l++) {
+            int chave1 = gerador.nextInt(4) % 5;
+            int chave2 = gerador.nextInt(4) % 5;
 
-                if (l == 0) {
-                    coluna1 = chave1;
-                    linha1 = chave2;
-                }
+            if (l == 0) {
+                coluna1 = chave1;
+                linha1 = chave2;
+            }
 
-                else if (l == 1) {
-                    while (chave1 == coluna1 && chave2 == linha1) {
-                        chave1 = gerador.nextInt(4) % 5;
-                        chave2 = gerador.nextInt(4) % 5;}
-                    coluna2 = chave1;
-                    linha2 = chave2;
-                }
+            else if (l == 1) {
+                while (chave1 == coluna1 && chave2 == linha1) {
+                    chave1 = gerador.nextInt(4) % 5;
+                    chave2 = gerador.nextInt(4) % 5;}
+                coluna2 = chave1;
+                linha2 = chave2;
+            }
 
-                else if(l == 2) {
-                    while ((chave1 == coluna1 && chave2 == linha1) || (chave1 == coluna2 && chave2 == linha2)) {
-                        chave1 = gerador.nextInt(4) % 5;
-                        chave2 = gerador.nextInt(4) % 5;}
-                }
+            else if(l == 2) {
+                while ((chave1 == coluna1 && chave2 == linha1) || (chave1 == coluna2 && chave2 == linha2)) {
+                    chave1 = gerador.nextInt(4) % 5;
+                    chave2 = gerador.nextInt(4) % 5;}
+            }
 
-                for (int i = 0; i<5; i++) {
-                    for (int j = 0; j<5; j++) {
-                        if(contanavios == 3) {
-                            break;
-                        }
+            for (int i = 0; i<5; i++) {
+                for (int j = 0; j<5; j++) {
+                    if(contanavios == 3) {
+                        break;
+                    }
 
-                        if (i == chave1 && j == chave2) {
-                            mapanavios[i][j] = 1;
-                            contanavios++;
-                        }
+                    if (i == chave1 && j == chave2) {
+                        mapanavios[i][j] = 1;
+                        contanavios++;
                     }
                 }
             }
+        }
 
         // Configurando a caixa para ter um layout vertical (topo para baixo)
         caixa.setLayout(new BoxLayout(caixa, BoxLayout.Y_AXIS));
@@ -175,9 +176,9 @@ public class TelaJogo extends JFrame implements ActionListener {
                             }
                         }
                         if ((int) botaoClicado.getClientProperty("temNavio") == 1) {
-                            botaoClicado.setIcon(navioIcon);
+                            botaoClicado.setDisabledIcon(navioIcon);
                         } else {
-                            botaoClicado.setIcon(tiroIcon);
+                            botaoClicado.setDisabledIcon(tiroIcon);
                         }
                         informacoes.setText("Há " + naviosNaColuna + " navio(s) na coluna e " + naviosNaLinha + " navio(s) nessa linha");
                         botaoClicado.setEnabled(false);
@@ -186,9 +187,9 @@ public class TelaJogo extends JFrame implements ActionListener {
 
                         if (VezesJogadas >= QuantidadeDeJogadas) { //mensagem quando a quantidade de jogadas atingirem o limite
                             informacoes.setText("Fim do jogo! Você atingiu a quantidade máxima de jogadas.");
-                    }
+                        }
 
-                }});
+                    }});
 
                 tabuleiro.setVisible(true);
             }
@@ -227,8 +228,8 @@ public class TelaJogo extends JFrame implements ActionListener {
     }
 
     public static void main(String args[]) {
-    	TelaInicial telaInicial = new TelaInicial();
-    	EscolherDificuldade escolherDificuldade = new EscolherDificuldade(telaInicial);
+        TelaInicial telaInicial = new TelaInicial();
+        EscolherDificuldade escolherDificuldade = new EscolherDificuldade(telaInicial);
         SwingUtilities.invokeLater(() -> new TelaJogo(escolherDificuldade));
     }
 
